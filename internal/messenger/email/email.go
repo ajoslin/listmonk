@@ -1,19 +1,25 @@
 package email
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"math/rand"
 	"net/smtp"
 	"net/textproto"
 
-	"golang.org/x/time/rate"
-	"time"
-	"math"
-
 	"github.com/knadh/listmonk/internal/messenger"
 	"github.com/knadh/smtppool"
+
+	"github.com/go-redis/redis/v8"
+	"github.com/go-redis/redis_rate/v9"
 )
+
+var rdb = redis.NewClient(&redis.Options{
+	Addr: "localhost:6379",
+})
+var limiter = redis_rate.NewLimiter(rdb)
+var ctx = context.Background()
 
 const (
 	emName        = "email"
@@ -35,7 +41,6 @@ type Server struct {
 	// The JSON tag is for config unmarshal to work.
 	smtppool.Opt `json:",squash"`
 
-	limiter *rate.Limiter
 	pool *smtppool.Pool
 }
 
@@ -86,13 +91,6 @@ func New(servers ...Server) (*Emailer, error) {
 			return nil, err
 		}
 
-		limit := s.DailyRateLimit
-		if limit == 0 {
-			limit = math.MaxInt64
-		}
-		limiter := rate.NewLimiter(rate.Every(24*time.Hour), limit)
-
-		s.limiter = limiter
 		s.pool = pool
 		e.servers = append(e.servers, &s)
 	}
@@ -114,16 +112,28 @@ func (e *Emailer) Push(m messenger.Message) error {
 		srv *Server
 	)
 
+	tries := 0
 	for {
+		if tries >= len(e.servers) {
+			return fmt.Errorf("all servers are rate limited")
+		}
 		if ln > 1 {
 			srv = e.servers[rand.Intn(ln)]
-			if (srv.limiter.Allow()) {
-				break;
+			if srv.DailyRateLimit == 0 {
+				break
+			}
+			res, err := limiter.Allow(ctx, srv.Host, redis_rate.PerHour(srv.DailyRateLimit/24))
+			if err != nil {
+				return fmt.Errorf("rate limit error: %w", err)
+			}
+			if res.Allowed > 0 {
+				break
 			}
 		} else {
 			srv = e.servers[0]
-			break;
+			break
 		}
+		tries += 1
 	}
 
 	// Are there attachments?
