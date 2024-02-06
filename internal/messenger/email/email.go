@@ -175,6 +175,8 @@ func (e *Emailer) Push(m models.Message) error {
 		}
 	}
 
+	e.ratecounters[srv.Host].Incr(1)
+
 	return srv.pool.Send(em)
 }
 
