@@ -145,7 +145,7 @@
                 <b-field label="Max. daily messages" label-position="on-border"
                   message="Maximum number to send to this source per day">
                   <b-numberinput v-model="item.max_daily_sends" name="max_daily_sends" type="is-light" controls-position="compact"
-                    placeholder="25" min="1" />
+                    placeholder="25" min="0" />
                 </b-field>
               </div>
             </div>
