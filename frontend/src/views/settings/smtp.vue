@@ -141,6 +141,16 @@
             </div>
 
             <div class="columns">
+              <div class="column is-3">
+                <b-field :label="Max. daily messages" label-position="on-border"
+                  :message="Maximum number to send to this source per day">
+                  <b-numberinput v-model="item.max_daily_sends" name="max_daily_sends" type="is-light" controls-position="compact"
+                    placeholder="25" min="1" />
+                </b-field>
+              </div>
+            </div>
+
+            <div class="columns">
               <div class="column">
                 <p v-if="item.email_headers.length === 0 && !item.showHeaders">
                   <a href="#" @click.prevent="() => showSMTPHeaders(n)">
@@ -256,6 +266,7 @@ export default Vue.extend({
         password: '',
         email_headers: [],
         max_conns: 10,
+        max_daily_sends: 0,
         max_msg_retries: 2,
         idle_timeout: '15s',
         wait_timeout: '5s',

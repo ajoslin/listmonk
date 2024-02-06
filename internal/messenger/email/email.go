@@ -6,9 +6,11 @@ import (
 	"math/rand"
 	"net/smtp"
 	"net/textproto"
+	"time"
 
 	"github.com/knadh/listmonk/models"
 	"github.com/knadh/smtppool"
+	"github.com/paulbellamy/ratecounter"
 )
 
 const (
@@ -25,6 +27,8 @@ type Server struct {
 	TLSSkipVerify bool              `json:"tls_skip_verify"`
 	EmailHeaders  map[string]string `json:"email_headers"`
 
+	MaxDailySends int `json:"max_daily_sends"`
+
 	// Rest of the options are embedded directly from the smtppool lib.
 	// The JSON tag is for config unmarshal to work.
 	smtppool.Opt `json:",squash"`
@@ -35,12 +39,15 @@ type Server struct {
 // Emailer is the SMTP e-mail messenger.
 type Emailer struct {
 	servers []*Server
+
+	ratecounters map[string]*ratecounter.RateCounter
 }
 
 // New returns an SMTP e-mail Messenger backend with the given SMTP servers.
 func New(servers ...Server) (*Emailer, error) {
 	e := &Emailer{
-		servers: make([]*Server, 0, len(servers)),
+		servers:      make([]*Server, 0, len(servers)),
+		ratecounters: make(map[string]*ratecounter.RateCounter),
 	}
 
 	for _, srv := range servers {
@@ -58,6 +65,8 @@ func New(servers ...Server) (*Emailer, error) {
 			return nil, fmt.Errorf("unknown SMTP auth type '%s'", s.AuthProtocol)
 		}
 		s.Opt.Auth = auth
+
+		e.ratecounters[s.Host] = ratecounter.NewRateCounter(24 * time.Hour)
 
 		// TLS config.
 		if s.TLSType != "none" {
@@ -99,8 +108,18 @@ func (e *Emailer) Push(m models.Message) error {
 		ln  = len(e.servers)
 		srv *Server
 	)
+
 	if ln > 1 {
-		srv = e.servers[rand.Intn(ln)]
+		start := rand.Intn(ln)
+		for {
+			srv = e.servers[start]
+			if srv.MaxDailySends > 0 && e.ratecounters[srv.Host].Rate() > int64(srv.MaxDailySends) {
+				start = (start + 1) % ln
+				continue
+			} else {
+				break
+			}
+		}
 	} else {
 		srv = e.servers[0]
 	}

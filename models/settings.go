@@ -66,6 +66,7 @@ type Settings struct {
 		Password      string              `json:"password,omitempty"`
 		EmailHeaders  []map[string]string `json:"email_headers"`
 		MaxConns      int                 `json:"max_conns"`
+		MaxDailySends int                 `json:"max_daily_sends"`
 		MaxMsgRetries int                 `json:"max_msg_retries"`
 		IdleTimeout   string              `json:"idle_timeout"`
 		WaitTimeout   string              `json:"wait_timeout"`

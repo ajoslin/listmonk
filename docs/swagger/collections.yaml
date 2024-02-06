@@ -3222,6 +3222,8 @@ components:
             type: object
         max_conns:
           type: integer
+        max_daily_sends:
+          type: integer
         max_msg_retries:
           type: integer
         idle_timeout:
