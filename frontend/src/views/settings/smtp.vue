@@ -142,8 +142,8 @@
 
             <div class="columns">
               <div class="column is-3">
-                <b-field :label="Max. daily messages" label-position="on-border"
-                  :message="Maximum number to send to this source per day">
+                <b-field label="Max. daily messages" label-position="on-border"
+                  message="Maximum number to send to this source per day">
                   <b-numberinput v-model="item.max_daily_sends" name="max_daily_sends" type="is-light" controls-position="compact"
                     placeholder="25" min="1" />
                 </b-field>
