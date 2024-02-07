@@ -44,6 +44,7 @@ type Store interface {
 type Messenger interface {
 	Name() string
 	Push(models.Message) error
+	PushTransactional(models.Message) error
 	Flush() error
 	Close() error
 }
@@ -508,7 +509,7 @@ func (m *Manager) worker() {
 				return
 			}
 
-			err := m.messengers[msg.Messenger].Push(msg)
+			err := m.messengers[msg.Messenger].PushTransactional(msg)
 			if err != nil {
 				m.log.Printf("error sending message '%s': %v", msg.Subject, err)
 			}

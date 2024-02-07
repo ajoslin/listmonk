@@ -100,7 +100,7 @@ func (e *Emailer) Name() string {
 	return emName
 }
 
-// Push pushes a message to the server.
+// Push pushes a message to a randomly picked server
 func (e *Emailer) Push(m models.Message) error {
 	// If there are more than one SMTP servers, send to a random
 	// one from the list.
@@ -123,7 +123,38 @@ func (e *Emailer) Push(m models.Message) error {
 	} else {
 		srv = e.servers[0]
 	}
+	return e.PushServer(m, srv)
+}
 
+// Transactional messages prefer to be delivered to a non-limited server.
+func (e *Emailer) PushTransactional(m models.Message) error {
+	// If there are more than one SMTP servers, send to a random
+	// one from the list.
+	var (
+		ln  = len(e.servers)
+		srv *Server
+	)
+
+	tries := 0
+	if ln > 1 {
+		start := rand.Intn(ln)
+		for {
+			srv = e.servers[start]
+			if srv.MaxDailySends > 0 && tries < ln {
+				start = (start + 1) % ln
+				tries += 1
+				continue
+			} else {
+				break
+			}
+		}
+	} else {
+		srv = e.servers[0]
+	}
+	return e.PushServer(m, srv)
+}
+
+func (e *Emailer) PushServer(m models.Message, srv *Server) error {
 	// Are there attachments?
 	var files []smtppool.Attachment
 	if m.Attachments != nil {

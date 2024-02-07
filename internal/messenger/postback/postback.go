@@ -141,6 +141,10 @@ func (p *Postback) Push(m models.Message) error {
 	return p.exec(http.MethodPost, p.o.RootURL, b, nil)
 }
 
+func (p *Postback) PushTransactional(m models.Message) error {
+	return p.Push(m)
+}
+
 // Flush flushes the message queue to the server.
 func (p *Postback) Flush() error {
 	return nil
