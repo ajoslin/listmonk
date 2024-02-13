@@ -42,7 +42,7 @@
             <media-settings :form="form" :key="key" />
           </b-tab-item><!-- media -->
 
-          <b-tab-item :label="$t('settings.smtp.name')">
+          <b-tab-item :label="$t('settings.smtp.name')" :aria-disabled="disableSmtp">
             <smtp-settings :form="form" :key="key" />
           </b-tab-item><!-- mail servers -->
 
@@ -94,6 +94,8 @@ export default Vue.extend({
       // :key="key" is a ack to re-render child components every time settings
       // is pulled. Otherwise, props don't react.
       key: 0,
+
+      disableSmtp: !window.localStorage.smtp ? 'true' : 'false',
 
       isLoading: false,
 

@@ -3,20 +3,22 @@
 
 /* import inter-regular */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
-  src: local(''),
-       url('assets/fonts/Inter-Regular.woff2') format('woff2'),
+  src:
+    local(""),
+    url("assets/fonts/Inter-Regular.woff2") format("woff2");
 }
 
 /* import inter-600 */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
-  src: local(''),
-       url('assets/fonts/Inter-Bold.woff2') format('woff2'),
+  src:
+    local(""),
+    url("assets/fonts/Inter-Bold.woff2") format("woff2");
 }
 
 $body-family: "Inter", "Helvetica Neue", sans-serif;
@@ -26,27 +28,41 @@ $body-background-color: $white-bis;
 $primary: #0055d4;
 $green: #0db35e;
 $turquoise: $green;
-$red: #FF5722;
+$red: #ff5722;
 
 $link: $primary;
 $input-placeholder-color: $grey-light;
 $grey-lightest: #eaeaea;
 
-$colors: map-merge($colors, (
-    "turquoise": ($green, $green-invert),
-    "green": ($green, $green-invert),
-    "success": ($green, $green-invert),
-    "danger": ($red, $green-invert),
-));
+$colors: map-merge(
+  $colors,
+  (
+    "turquoise": (
+      $green,
+      $green-invert,
+    ),
+    "green": (
+      $green,
+      $green-invert,
+    ),
+    "success": (
+      $green,
+      $green-invert,
+    ),
+    "danger": (
+      $red,
+      $green-invert,
+    ),
+  )
+);
 
 $sidebar-box-shadow: none;
 $sidebar-width: 240px;
 $menu-item-active-background-color: $white-bis;
 $menu-item-active-color: $primary;
 
-
 /* Buefy */
-$modal-background-background-color: rgba(0, 0, 0, .30);
+$modal-background-background-color: rgba(0, 0, 0, 0.3);
 
 .line-chart {
   min-height: 300px;
@@ -57,7 +73,8 @@ $modal-background-background-color: rgba(0, 0, 0, .30);
 @import "buefy/src/scss/buefy";
 
 /* Custom style overrides */
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -111,10 +128,12 @@ section {
 }
 
 .is-disabled {
-  opacity: 0.30;
+  opacity: 0.3;
 }
 
-.b-checkbox.checkbox:hover input[type="checkbox"]:not(:disabled) + .check.is-primary:hover {
+.b-checkbox.checkbox:hover
+  input[type="checkbox"]:not(:disabled)
+  + .check.is-primary:hover {
   border-color: $primary;
 }
 .b-checkbox.checkbox input[type="checkbox"]:checked + .check.is-primary {
@@ -127,9 +146,9 @@ section {
   box-shadow: 2px 2px 0 #f3f3f3;
   border: 1px solid #e6e6e6;
 }
-  .box hr {
-    background-color: #efefef;
-  }
+.box hr {
+  background-color: #efefef;
+}
 
 .copy-text {
   color: inherit;
@@ -260,7 +279,6 @@ body.is-noscroll {
   height: 30vh;
 }
 
-
 .editor {
   margin-bottom: 30px;
 
@@ -268,7 +286,7 @@ body.is-noscroll {
     box-shadow: 2px 2px 0 #f3f3f3;
     border: 1px solid #e6e6e6;
     border-radius: 3px;
-  
+
     .tox-toolbar__primary {
       border-color: #e6e6e6 !important;
     }
@@ -283,9 +301,7 @@ body.is-noscroll {
   .tox-tinymce--toolbar-sticky-on .tox-editor-header {
     padding-top: 48px !important;
   }
-
 }
-
 
 .tox.tox-silver-sink {
   z-index: 850;
@@ -320,15 +336,20 @@ body.is-noscroll {
   }
 }
 
-.tox, .tox-tinymce, .tox-tinymce-aux, .tox .tox-button, .tox .tox-button-link, .tox .tox-dialog__title,
-  .tox .tox-textfield,
-  .tox .tox-toolbar-textfield,
-  .tox .tox-listboxfield .tox-listbox--select,
-  .tox .tox-textarea,
-  .tox .tox-selectfield select {
-    /* All TinyMCE components */
-    font-family: $body-family !important;
-  }
+.tox,
+.tox-tinymce,
+.tox-tinymce-aux,
+.tox .tox-button,
+.tox .tox-button-link,
+.tox .tox-dialog__title,
+.tox .tox-textfield,
+.tox .tox-toolbar-textfield,
+.tox .tox-listboxfield .tox-listbox--select,
+.tox .tox-textarea,
+.tox .tox-selectfield select {
+  /* All TinyMCE components */
+  font-family: $body-family !important;
+}
 
 /* Table colors and padding */
 .main table {
@@ -336,12 +357,14 @@ body.is-noscroll {
     background: $white-bis;
     border-bottom: 1px solid $grey-lighter;
   }
-  thead th, tbody td {
+  thead th,
+  tbody td {
     padding: 15px 10px;
     border-color: $grey-lightest;
   }
 
-  .actions a, .actions .a {
+  .actions a,
+  .actions .a {
     margin: 0 10px;
     display: inline-block;
   }
@@ -376,7 +399,6 @@ body.is-noscroll {
         margin-left: 0;
       }
     }
-
   }
 }
 
@@ -400,7 +422,8 @@ body.is-noscroll {
 .modal-background {
   background: rgba(255, 255, 255, 0.7);
 }
-.modal-content, .modal.dialog .modal-card {
+.modal-content,
+.modal.dialog .modal-card {
   background: $white;
   box-shadow: 2px 2px 3px #e4e4e4;
   border: 1px solid #e5e5e5;
@@ -416,7 +439,6 @@ body.is-noscroll {
   display: none;
 }
 
-
 /* Table */
 .b-table .level-left {
   min-width: 60%;
@@ -427,7 +449,6 @@ body.is-noscroll {
     margin-right: 30px;
   }
 }
-
 
 /* Fix for input colours */
 .button {
@@ -466,7 +487,8 @@ body.is-noscroll {
   }
   a.dropdown-item {
     font-size: $size-6;
-    &:hover, &.is-hovered {
+    &:hover,
+    &.is-hovered {
       background-color: $grey-lightest;
       color: $primary;
     }
@@ -480,7 +502,9 @@ body.is-noscroll {
   }
 }
 
-.input, .taginput .taginput-container.is-focusable, .textarea {
+.input,
+.taginput .taginput-container.is-focusable,
+.textarea {
   box-shadow: 2px 2px 0 $white-ter;
   border: 1px solid $grey-lighter;
 }
@@ -489,13 +513,14 @@ body.is-noscroll {
   height: auto;
 }
 
-.input, .select select {
+.input,
+.select select {
   height: auto;
   padding: 10px 12px;
 }
-  .control.has-icons-left .icon.is-left {
-    height: 3rem;
-  }
+.control.has-icons-left .icon.is-left {
+  height: 3rem;
+}
 
 .taginput .taginput-container .autocomplete {
   input {
@@ -531,7 +556,8 @@ body.is-noscroll {
     color: $grey;
   }
 }
-.has-numberinput .field, .field.is-grouped {
+.has-numberinput .field,
+.field.is-grouped {
   margin-bottom: 0;
 }
 .b-numberinput.field.is-grouped div.control {
@@ -541,6 +567,10 @@ body.is-noscroll {
 /* Tabs */
 .b-tabs .tab-content {
   padding-top: 3rem;
+}
+
+.b-tabs ul li[aria-hidden="true"] {
+  display: none;
 }
 
 /* Tags */
@@ -563,28 +593,38 @@ body.is-noscroll {
     color: $grey;
   }
 
-  &.private, &.scheduled, &.paused, &.tx {
+  &.private,
+  &.scheduled,
+  &.paused,
+  &.tx {
     $color: #ed7b00;
     color: $color;
     background: #fff7e6;
     border: 1px solid lighten($color, 37%);
     box-shadow: 1px 1px 0 lighten($color, 37%);
   }
-  &.public, &.running, &.list, &.campaign {
+  &.public,
+  &.running,
+  &.list,
+  &.campaign {
     $color: $primary;
-    color: lighten($color, 20%);;
+    color: lighten($color, 20%);
     background: #e6f7ff;
     border: 1px solid lighten($color, 42%);
     box-shadow: 1px 1px 0 lighten($color, 42%);
   }
-  &.finished, &.enabled, &.status-confirmed {
+  &.finished,
+  &.enabled,
+  &.status-confirmed {
     $color: $green;
     color: $color;
     background: #f6ffed;
     border: 1px solid lighten($color, 45%);
     box-shadow: 1px 1px 0 lighten($color, 45%);
   }
-  &.blocklisted, &.cancelled, &.status-unsubscribed {
+  &.blocklisted,
+  &.cancelled,
+  &.status-unsubscribed {
     $color: $red;
     color: $color;
     background: #fff1f0;
@@ -607,7 +647,6 @@ body.is-noscroll {
     margin-right: 1px;
   }
 }
-
 
 /* Page header */
 .page-header {
@@ -640,7 +679,8 @@ section.dashboard {
     padding: 30px;
     margin: 10px;
 
-    &:first-child, &:last-child {
+    &:first-child,
+    &:last-child {
       margin: 0;
     }
   }
@@ -699,7 +739,8 @@ section.lists {
   overflow-y: scroll;
   max-height: 250px;
 
-  thead th, tbody td {
+  thead th,
+  tbody td {
     padding: 10px;
   }
 
@@ -847,7 +888,7 @@ section.analytics {
 /* Settings */
 .settings {
   .disabled {
-    opacity: 0.30;
+    opacity: 0.3;
   }
   .box {
     margin-bottom: 30px;
@@ -868,7 +909,7 @@ section.analytics {
     height: 70vh;
     overflow-y: scroll;
     font-family: monospace;
-    font-size: 0.90rem;
+    font-size: 0.9rem;
 
     padding: 15px;
     border: 1px solid $grey-lightest;
@@ -909,7 +950,8 @@ section.analytics {
     font-family: $body-family;
     font-size: 11px;
   }
-  .c3-axis path, .c3-axis line {
+  .c3-axis path,
+  .c3-axis line {
     stroke: #eee;
   }
 
@@ -929,20 +971,22 @@ section.analytics {
 }
 
 /* Vue animations */
-.slide-enter-active, .slide-leave-active {
+.slide-enter-active,
+.slide-leave-active {
   transition: opacity 50ms;
   max-height: none;
 }
-.slide-enter, .slide-leave-to {
+.slide-enter,
+.slide-leave-to {
   transition: opacity 50ms;
   opacity: 0;
   max-height: none;
 }
-.slide-leave-active, .slide-leave-to {
+.slide-leave-active,
+.slide-leave-to {
   transition: none;
   display: none;
 }
-
 
 /* Toasts */
 .notices {
@@ -979,7 +1023,8 @@ section.analytics {
 }
 
 @media screen and (max-width: 1100px) {
-  html, body {
+  html,
+  body {
     overflow-x: auto;
   }
 
