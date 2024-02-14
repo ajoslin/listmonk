@@ -135,22 +135,22 @@ func (e *Emailer) PushTransactional(m models.Message) error {
 		srv *Server
 	)
 
-	tries := 0
-	if ln > 1 {
-		start := rand.Intn(ln)
-		for {
-			srv = e.servers[start]
-			if srv.MaxDailySends > 0 && tries < ln {
-				start = (start + 1) % ln
-				tries += 1
-				continue
-			} else {
-				break
-			}
-		}
-	} else {
-		srv = e.servers[0]
-	}
+	// tries := 0
+	// if ln > 1 {
+	// 	start := ln - 1
+	// 	for {
+	// 		srv = e.servers[start]
+	// 		if srv.MaxDailySends > 200000 && tries < ln {
+	// 			start = (start + 1) % ln
+	// 			tries += 1
+	// 			continue
+	// 		} else {
+	// 			break
+	// 		}
+	// 	}
+	// } else {
+	srv = e.servers[ln-1]
+	// }
 	return e.PushServer(m, srv)
 }
 
